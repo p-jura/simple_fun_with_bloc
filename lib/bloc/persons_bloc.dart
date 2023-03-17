@@ -1,15 +1,20 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:person_app_with_bloc/load_action.dart';
-import 'package:person_app_with_bloc/repository.dart';
 
+import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart' show immutable;
 import '../model.dart';
 
 part 'persons_event.dart';
 part 'persons_state.dart';
 
+extension IsEqualToIgnoringOrdering<T> on Iterable<T> {
+  bool isEqualToIgnoringOrdering(Iterable<T> other) =>
+      length == other.length &&
+      {...this}.intersection({...other}).length == length;
+}
+
 class PersonsBloc extends Bloc<LoadAction, FetchResult?> {
-  final Map<PersonsUrl, Iterable<Person>> _cache = {};
+
+  final Map<String, Iterable<Person>> _cache = {};
   PersonsBloc() : super(null) {
     on<LoadPersonsAction>(
       (event, emit) async {
@@ -23,7 +28,8 @@ class PersonsBloc extends Bloc<LoadAction, FetchResult?> {
           );
           emit(result);
         } else {
-          final persons = await getPerson(url.urlString);
+          final loader = event.loader;
+          final persons = await loader(url);
           _cache[url] = persons;
           final result = FetchResult(
             persons: persons,

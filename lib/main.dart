@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:person_app_with_bloc/bloc/persons_bloc.dart';
-import 'package:person_app_with_bloc/load_action.dart';
-import 'package:person_app_with_bloc/repository.dart';
 import 'dart:developer'  as devtools show log;
+
+
+import 'package:person_app_with_bloc/repository.dart';
 void main() {
   runApp(const MyApp());
   
@@ -59,7 +60,7 @@ class MyHomePage extends StatelessWidget {
                   onPressed: () {
                     context
                         .read<PersonsBloc>()
-                        .add(LoadPersonsAction(url: PersonsUrl.person1));
+                        .add(const LoadPersonsAction(url: PERSONS1_URL, loader: getPerson));
                   },
                   icon: const Icon(Icons.download),
                   label: const Text('Load json #1'),
@@ -68,7 +69,7 @@ class MyHomePage extends StatelessWidget {
                   onPressed: () {
                     context
                         .read<PersonsBloc>()
-                        .add(LoadPersonsAction(url: PersonsUrl.person2));
+                        .add(const LoadPersonsAction(url: PERSONS2_URL, loader: getPerson));
                   },
                   icon: const Icon(Icons.download),
                   label: const Text('Load json #2'),

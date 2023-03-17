@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'model.dart';
 
+
 Future<Iterable<Person>> getPerson(String url) async => await HttpClient()
     .getUrl(Uri.parse(url))
     .then((req) => req.close())
@@ -9,14 +10,4 @@ Future<Iterable<Person>> getPerson(String url) async => await HttpClient()
     .then((str) => jsonDecode(str) as List<dynamic>)
     .then((list) => list.map((e) => Person.fromJson(e)));
 
-class FetchResult {
-  final Iterable<Person> persons;
-  final bool isRetrivedFromeCache;
-  const FetchResult({
-    required this.persons,
-    required this.isRetrivedFromeCache,
-  });
-  @override
-  String toString() =>
-      'FetchResult (isRetrivedFromeCache = $isRetrivedFromeCache), persons $persons';
-}
+
